@@ -1,0 +1,47 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Xcode — user-local
+**/xcuserdata/
+*.xcuserstate
+*.xcuserdatad
+*.moved-aside
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# Xcode — build artifacts (when building inside repo)
+DerivedData/
+.derivedData/
+build/
+
+# Xcode — SPM checkouts/build (when using SPM in workspace)
+.swiftpm/configuration/registries.json
+.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
+.netrc
+
+# Swift Package Manager (build dir; commit Package.swift / Package.resolved when used)
+.build/
+Packages/
+
+# CocoaPods (if added later)
+Pods/
+
+# Accio dependency management (if used)
+Dependencies/
+.accio/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# Code Injection / InjectionIII
+iOSInjectionProject/
+
+# Instruments
+*.trace
