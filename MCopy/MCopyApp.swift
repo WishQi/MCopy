@@ -14,7 +14,7 @@ private struct MenuBarExtraContent: View {
         Divider()
         Button("Settings…") {
             openSettings()
-            TinyPasteSettingsPresentation.activateAndBringToFront()
+            MCopySettingsPresentation.activateAndBringToFront()
         }
         .keyboardShortcut(",", modifiers: .command)
         Divider()
@@ -26,7 +26,7 @@ private struct MenuBarExtraContent: View {
 }
 
 @main
-struct TinyPasteApp: App {
+struct MCopyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     static let sharedModelContainer: ModelContainer = {

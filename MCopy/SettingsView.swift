@@ -30,7 +30,7 @@ enum LoginItemManager {
 }
 
 /// Menu bar apps use `.accessory` activation; SwiftUI settings windows otherwise stay behind other apps.
-enum TinyPasteSettingsPresentation {
+enum MCopySettingsPresentation {
     private static let settingsContentWidth: CGFloat = 520
 
     static func activateAndBringToFront() {
@@ -134,10 +134,10 @@ struct SettingsView: View {
         .frame(width: 520, height: 560)
         .onAppear {
             openAtLogin = LoginItemManager.isEnabled
-            TinyPasteSettingsPresentation.activateAndBringToFront()
+            MCopySettingsPresentation.activateAndBringToFront()
         }
         .onDisappear {
-            TinyPasteSettingsPresentation.restoreAccessoryActivationPolicy()
+            MCopySettingsPresentation.restoreAccessoryActivationPolicy()
         }
     }
 

@@ -1,4 +1,4 @@
-# tiny-paste
+# MCopy
 
 A lightweight macOS menu bar clipboard manager built with SwiftUI + SwiftData.
 
@@ -14,10 +14,10 @@ A lightweight macOS menu bar clipboard manager built with SwiftUI + SwiftData.
 
 - `⌘⇧V`: Show history panel
 - `⌘,`: Open Settings
-- `⌘Q`: Quit TinyPaste
+- `⌘Q`: Quit MCopy
 
 ## Run
 
-1. Open `tiny-paste.xcodeproj` in Xcode
-2. Select the `tiny-paste` scheme
+1. Open `MCopy.xcodeproj` in Xcode
+2. Select the `MCopy` scheme
 3. Build and run
