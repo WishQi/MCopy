@@ -10,7 +10,6 @@ private struct MenuBarExtraContent: View {
         Button("Show History") {
             toggleHistoryPanel()
         }
-        .keyboardShortcut("v", modifiers: [.command, .shift])
         Divider()
         Button("Settings…") {
             openSettings()
