@@ -49,6 +49,12 @@ struct ClipboardHistoryView: View {
         .onAppear {
             isSearchFocused = true
             ensureValidSelection()
+            // Re-assert on the next runloop tick: on cold launch the TextField
+            // isn't wired into the panel's responder chain yet when onAppear
+            // fires, so the synchronous assignment above gets dropped.
+            DispatchQueue.main.async {
+                isSearchFocused = true
+            }
         }
         .onChange(of: searchQuery) { _, _ in
             selectedID = displayItems.first?.id
