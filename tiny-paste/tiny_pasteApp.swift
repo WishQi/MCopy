@@ -18,7 +18,7 @@ private struct MenuBarExtraContent: View {
         }
         .keyboardShortcut(",", modifiers: .command)
         Divider()
-        Button("Quit TinyPaste") {
+        Button("Quit MCopy") {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
@@ -44,7 +44,7 @@ struct TinyPasteApp: App {
     }()
 
     var body: some Scene {
-        MenuBarExtra("TinyPaste", systemImage: "doc.on.clipboard") {
+        MenuBarExtra("MCopy", systemImage: "doc.on.clipboard") {
             MenuBarExtraContent(toggleHistoryPanel: { appDelegate.togglePanel() })
         }
         .menuBarExtraStyle(.menu)

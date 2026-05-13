@@ -1,5 +1,33 @@
 import AppKit
+import ServiceManagement
 import SwiftUI
+
+/// Wraps `SMAppService.mainApp` so the "Open at login" toggle can reflect and mutate the launch-at-login state.
+enum LoginItemManager {
+    static var isEnabled: Bool {
+        SMAppService.mainApp.status == .enabled
+    }
+
+    @discardableResult
+    static func setEnabled(_ enabled: Bool) -> Bool {
+        let service = SMAppService.mainApp
+        do {
+            if enabled {
+                if service.status != .enabled {
+                    try service.register()
+                }
+            } else {
+                if service.status == .enabled {
+                    try service.unregister()
+                }
+            }
+            return true
+        } catch {
+            NSLog("Failed to update login item: \(error.localizedDescription)")
+            return false
+        }
+    }
+}
 
 /// Menu bar apps use `.accessory` activation; SwiftUI settings windows otherwise stay behind other apps.
 enum TinyPasteSettingsPresentation {
@@ -30,9 +58,8 @@ struct SettingsView: View {
     @StateObject private var shortcuts = ShortcutStore.shared
     @AppStorage(PanelPosition.defaultsKey) private var panelPositionRaw: String = PanelPosition.bottom.rawValue
 
-    // Placeholder state — General toggles not yet wired to real settings.
-    @State private var openAtLogin = false
-    @State private var runInBackground = true
+    @State private var openAtLogin = LoginItemManager.isEnabled
+    // Placeholder state — remaining General toggles not yet wired to real settings.
     @State private var iCloudSync = false
     @State private var soundEffects = true
 
@@ -44,8 +71,13 @@ struct SettingsView: View {
         Form {
             Section("General") {
                 Toggle("Open at login",    isOn: $openAtLogin)
-                Toggle("Run in background", isOn: $runInBackground)
+                    .onChange(of: openAtLogin) { _, newValue in
+                        if !LoginItemManager.setEnabled(newValue) {
+                            openAtLogin = LoginItemManager.isEnabled
+                        }
+                    }
                 Toggle("iCloud sync",      isOn: $iCloudSync)
+                    .disabled(true)
                 Toggle("Sound effects",    isOn: $soundEffects)
 
                 LabeledContent("Panel position on screen") {
@@ -75,9 +107,11 @@ struct SettingsView: View {
             Section("Shortcuts") {
                 LabeledContent("Activate Paste") {
                     KeyRecorderView(shortcut: shortcuts.binding(for: .activatePaste))
+                        .disabled(true)
                 }
                 LabeledContent("Activate Paste Stack") {
                     KeyRecorderView(shortcut: shortcuts.binding(for: .activatePasteStack))
+                        .disabled(true)
                 }
             }
 
@@ -99,6 +133,7 @@ struct SettingsView: View {
         .formStyle(.grouped)
         .frame(width: 520, height: 560)
         .onAppear {
+            openAtLogin = LoginItemManager.isEnabled
             TinyPasteSettingsPresentation.activateAndBringToFront()
         }
         .onDisappear {

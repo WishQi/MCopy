@@ -47,6 +47,7 @@ enum PanelPosition: String, CaseIterable, Identifiable {
 class ClipboardPanel: NSPanel, NSWindowDelegate {
     private var previousApp: NSRunningApplication?
     weak var monitor: ClipboardMonitor?
+    private let store: ClipboardStore
 
     private var isAnimatingClose = false
     private var skipCloseAnimation = false
@@ -54,7 +55,8 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
     private let closeDuration: TimeInterval = 0.16
     private let slideOffset: CGFloat = 24
 
-    init(container: ModelContainer) {
+    init(container: ModelContainer, store: ClipboardStore) {
+        self.store = store
         // Placeholder frame — showPanel() resizes & repositions on each open.
         super.init(
             contentRect: .zero,
@@ -134,8 +136,8 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
             )
         }
 
-        let slideIn = Self.slideInOffset(for: position, slideOffset: slideOffset)
-        let startFrame = finalFrame.offsetBy(dx: slideIn.width, dy: slideIn.height)
+        let slide = Self.slideOffset(for: position, slideOffset: slideOffset)
+        let startFrame = finalFrame.offsetBy(dx: slide.width, dy: slide.height)
 
         setFrame(startFrame, display: false)
         alphaValue = 0
@@ -158,8 +160,8 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
         if isAnimatingClose { return }
         isAnimatingClose = true
 
-        let slideOut = Self.slideOutOffset(for: PanelPosition.current, slideOffset: slideOffset)
-        let endFrame = frame.offsetBy(dx: slideOut.width, dy: slideOut.height)
+        let slide = Self.slideOffset(for: PanelPosition.current, slideOffset: slideOffset)
+        let endFrame = frame.offsetBy(dx: slide.width, dy: slide.height)
         NSAnimationContext.runAnimationGroup({ ctx in
             ctx.duration = closeDuration
             ctx.timingFunction = CAMediaTimingFunction(name: .easeIn)
@@ -172,6 +174,10 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
             self.skipCloseAnimation = false
             self.isAnimatingClose = false
             self.alphaValue = 1
+            // Return focus to whichever app was frontmost before the panel opened.
+            // The paste path activates previousApp itself; this covers ESC / click-away.
+            self.previousApp?.activate()
+            self.previousApp = nil
         })
     }
 
@@ -181,6 +187,7 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
 
     private func pasteItem(_ item: ClipboardItem) {
         monitor?.ignoreNextChange()
+        store.touch(item)
         item.writeToPasteboard()
         // Skip the close animation here — the panel needs to disappear immediately
         // so the synthesized ⌘V lands in the previous app, not our panel.
@@ -212,18 +219,9 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
         up.post(tap: .cgSessionEventTap)
     }
 
-    /// Offset from `finalFrame` to the pre-animation frame (panel starts off-screen, slides in).
-    private static func slideInOffset(for position: PanelPosition, slideOffset: CGFloat) -> CGSize {
-        switch position {
-        case .bottom: return CGSize(width: 0, height: -slideOffset)
-        case .top:    return CGSize(width: 0, height: slideOffset)
-        case .left:   return CGSize(width: -slideOffset, height: 0)
-        case .right:  return CGSize(width: slideOffset, height: 0)
-        }
-    }
-
-    /// Offset from current frame toward off-screen when closing.
-    private static func slideOutOffset(for position: PanelPosition, slideOffset: CGFloat) -> CGSize {
+    /// Offset toward the off-screen edge for the given position. Used for both
+    /// the pre-open frame (start) and the post-close frame (end).
+    private static func slideOffset(for position: PanelPosition, slideOffset: CGFloat) -> CGSize {
         switch position {
         case .bottom: return CGSize(width: 0, height: -slideOffset)
         case .top:    return CGSize(width: 0, height: slideOffset)

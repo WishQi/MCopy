@@ -4,11 +4,11 @@ import SwiftData
 class ClipboardMonitor {
     private var timer: Timer?
     private var lastChangeCount: Int
-    private let modelContext: ModelContext
-    private(set) var shouldIgnoreNextChange = false
+    private let store: ClipboardStore
+    private var shouldIgnoreNextChange = false
 
-    init(modelContext: ModelContext) {
-        self.modelContext = modelContext
+    init(store: ClipboardStore) {
+        self.store = store
         self.lastChangeCount = NSPasteboard.general.changeCount
     }
 
@@ -40,20 +40,7 @@ class ClipboardMonitor {
         }
 
         guard let item = extractItem(from: pb) else { return }
-
-        // Deduplicate against the most recent saved item
-        var descriptor = FetchDescriptor<ClipboardItem>(
-            sortBy: [SortDescriptor(\.timestamp, order: .reverse)]
-        )
-        descriptor.fetchLimit = 1
-        if let recent = try? modelContext.fetch(descriptor).first {
-            if recent.contentType == item.contentType && recent.textContent == item.textContent {
-                return
-            }
-        }
-
-        modelContext.insert(item)
-        try? modelContext.save()
+        store.insert(item)
     }
 
     private func extractItem(from pb: NSPasteboard) -> ClipboardItem? {

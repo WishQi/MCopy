@@ -4,7 +4,7 @@ import SwiftData
 struct ClipboardHistoryView: View {
     @Query(sort: \ClipboardItem.timestamp, order: .reverse) private var items: [ClipboardItem]
     @AppStorage(PanelPosition.defaultsKey) private var panelPositionRaw: String = PanelPosition.bottom.rawValue
-    @State private var selectedIndex: Int = 0
+    @State private var selectedID: UUID?
     @State private var searchQuery: String = ""
     @FocusState private var isSearchFocused: Bool
 
@@ -46,8 +46,16 @@ struct ClipboardHistoryView: View {
             VisualEffectView(material: .menu, blendingMode: .behindWindow, cornerRadius: 16)
         )
         .preferredColorScheme(.dark)
-        .onAppear { isSearchFocused = true }
-        .onChange(of: searchQuery) { _, _ in selectedIndex = 0 }
+        .onAppear {
+            isSearchFocused = true
+            ensureValidSelection()
+        }
+        .onChange(of: searchQuery) { _, _ in
+            selectedID = displayItems.first?.id
+        }
+        .onChange(of: displayItems.map(\.id)) { _, _ in
+            ensureValidSelection()
+        }
     }
 
     // MARK: - Sub-views
@@ -122,9 +130,9 @@ struct ClipboardHistoryView: View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
-                    ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
-                        CardView(item: item, isSelected: index == selectedIndex)
-                            .id(index)
+                    ForEach(displayItems, id: \.id) { item in
+                        CardView(item: item, isSelected: item.id == selectedID)
+                            .id(item.id)
                             .onTapGesture { onPaste(item) }
                     }
                 }
@@ -132,9 +140,10 @@ struct ClipboardHistoryView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 14)
             }
-            .onChange(of: selectedIndex) { _, newIndex in
+            .onChange(of: selectedID) { _, newID in
+                guard let newID else { return }
                 withAnimation(.easeInOut(duration: 0.12)) {
-                    proxy.scrollTo(newIndex, anchor: .center)
+                    proxy.scrollTo(newID, anchor: .center)
                 }
             }
         }
@@ -144,9 +153,9 @@ struct ClipboardHistoryView: View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(spacing: 10) {
-                    ForEach(Array(displayItems.enumerated()), id: \.element.id) { index, item in
-                        CardView(item: item, isSelected: index == selectedIndex)
-                            .id(index)
+                    ForEach(displayItems, id: \.id) { item in
+                        CardView(item: item, isSelected: item.id == selectedID)
+                            .id(item.id)
                             .onTapGesture { onPaste(item) }
                     }
                 }
@@ -155,9 +164,10 @@ struct ClipboardHistoryView: View {
                 .padding(.top, 12)
                 .padding(.bottom, 14)
             }
-            .onChange(of: selectedIndex) { _, newIndex in
+            .onChange(of: selectedID) { _, newID in
+                guard let newID else { return }
                 withAnimation(.easeInOut(duration: 0.12)) {
-                    proxy.scrollTo(newIndex, anchor: .center)
+                    proxy.scrollTo(newID, anchor: .center)
                 }
             }
         }
@@ -180,14 +190,25 @@ struct ClipboardHistoryView: View {
     // MARK: - Actions
 
     private func pasteSelected() {
-        guard let item = displayItems[safe: selectedIndex] else { return }
+        guard let id = selectedID,
+              let item = displayItems.first(where: { $0.id == id }) else { return }
         onPaste(item)
     }
 
     private func moveSelection(by delta: Int) {
-        let newIndex = selectedIndex + delta
+        guard !displayItems.isEmpty else { return }
+        let currentIndex = displayItems.firstIndex(where: { $0.id == selectedID }) ?? 0
+        let newIndex = currentIndex + delta
         guard newIndex >= 0, newIndex < displayItems.count else { return }
-        selectedIndex = newIndex
+        selectedID = displayItems[newIndex].id
+    }
+
+    /// Keep `selectedID` pointing at an item that still exists in `displayItems`.
+    /// Falls back to the first item when the previously-selected one was removed
+    /// or when nothing is selected yet.
+    private func ensureValidSelection() {
+        if let id = selectedID, displayItems.contains(where: { $0.id == id }) { return }
+        selectedID = displayItems.first?.id
     }
 }
 
@@ -213,12 +234,4 @@ struct VisualEffectView: NSViewRepresentable {
     }
 
     func updateNSView(_ nsView: NSVisualEffectView, context: Context) {}
-}
-
-// MARK: - Helpers
-
-extension Collection {
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
-    }
 }

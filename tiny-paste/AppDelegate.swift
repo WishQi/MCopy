@@ -30,16 +30,20 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
     // MARK: - Setup
 
+    private var store: ClipboardStore?
+
     private func setupMonitor() {
-        let context = ModelContext(TinyPasteApp.sharedModelContainer)
-        let m = ClipboardMonitor(modelContext: context)
+        let container = TinyPasteApp.sharedModelContainer
+        let s = ClipboardStore(modelContext: container.mainContext)
+        store = s
+        let m = ClipboardMonitor(store: s)
         m.start()
         monitor = m
-        panel?.monitor = m
     }
 
     private func setupPanel() {
-        let p = ClipboardPanel(container: TinyPasteApp.sharedModelContainer)
+        guard let store else { return }
+        let p = ClipboardPanel(container: TinyPasteApp.sharedModelContainer, store: store)
         p.monitor = monitor
         panel = p
     }
