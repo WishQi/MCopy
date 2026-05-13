@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		BCE71C3C2FAC8B86003D2C5C /* tiny-paste.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tiny-paste.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BCE71C3C2FAC8B86003D2C5C /* MCopy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "MCopy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BCE71C3E2FAC8B86003D2C5C /* tiny-paste */ = {
+		BCE71C3E2FAC8B86003D2C5C /* MCopy */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = "tiny-paste";
+			path = "MCopy";
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -32,7 +32,7 @@
 		BCE71C332FAC8B86003D2C5C = {
 			isa = PBXGroup;
 			children = (
-				BCE71C3E2FAC8B86003D2C5C /* tiny-paste */,
+				BCE71C3E2FAC8B86003D2C5C /* MCopy */,
 				BCE71C3D2FAC8B86003D2C5C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -40,7 +40,7 @@
 		BCE71C3D2FAC8B86003D2C5C /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BCE71C3C2FAC8B86003D2C5C /* tiny-paste.app */,
+				BCE71C3C2FAC8B86003D2C5C /* MCopy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,9 +48,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BCE71C3B2FAC8B86003D2C5C /* tiny-paste */ = {
+		BCE71C3B2FAC8B86003D2C5C /* MCopy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BCE71C492FAC8B86003D2C5C /* Build configuration list for PBXNativeTarget "tiny-paste" */;
+			buildConfigurationList = BCE71C492FAC8B86003D2C5C /* Build configuration list for PBXNativeTarget "MCopy" */;
 			buildPhases = (
 				BCE71C382FAC8B86003D2C5C /* Sources */,
 				BCE71C392FAC8B86003D2C5C /* Frameworks */,
@@ -61,13 +61,13 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				BCE71C3E2FAC8B86003D2C5C /* tiny-paste */,
+				BCE71C3E2FAC8B86003D2C5C /* MCopy */,
 			);
-			name = "tiny-paste";
+			name = "MCopy";
 			packageProductDependencies = (
 			);
-			productName = "tiny-paste";
-			productReference = BCE71C3C2FAC8B86003D2C5C /* tiny-paste.app */;
+			productName = "MCopy";
+			productReference = BCE71C3C2FAC8B86003D2C5C /* MCopy.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -85,7 +85,7 @@
 					};
 				};
 			};
-			buildConfigurationList = BCE71C372FAC8B86003D2C5C /* Build configuration list for PBXProject "tiny-paste" */;
+			buildConfigurationList = BCE71C372FAC8B86003D2C5C /* Build configuration list for PBXProject "MCopy" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -99,7 +99,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BCE71C3B2FAC8B86003D2C5C /* tiny-paste */,
+				BCE71C3B2FAC8B86003D2C5C /* MCopy */,
 			);
 		};
 /* End PBXProject section */
@@ -179,7 +179,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -237,7 +237,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MACOSX_DEPLOYMENT_TARGET = 26.3;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = macosx;
@@ -259,13 +259,15 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_CFBundleDisplayName = MCopy;
+				INFOPLIST_KEY_CFBundleName = MCopy;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Maoqi. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.maoqi.tiny-paste";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maoqi.mcopy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -291,13 +293,15 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_CFBundleDisplayName = MCopy;
+				INFOPLIST_KEY_CFBundleName = MCopy;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2026 Maoqi. All rights reserved.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.maoqi.tiny-paste";
+				PRODUCT_BUNDLE_IDENTIFIER = com.maoqi.mcopy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -312,7 +316,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BCE71C372FAC8B86003D2C5C /* Build configuration list for PBXProject "tiny-paste" */ = {
+		BCE71C372FAC8B86003D2C5C /* Build configuration list for PBXProject "MCopy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BCE71C472FAC8B86003D2C5C /* Debug */,
@@ -321,7 +325,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BCE71C492FAC8B86003D2C5C /* Build configuration list for PBXNativeTarget "tiny-paste" */ = {
+		BCE71C492FAC8B86003D2C5C /* Build configuration list for PBXNativeTarget "MCopy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BCE71C4A2FAC8B86003D2C5C /* Debug */,
