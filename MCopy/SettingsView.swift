@@ -133,7 +133,7 @@ struct SettingsView: View {
                              : "Accessibility access required")
                             .font(.headline)
                         Text(accessibilityTrusted
-                             ? "MCopy can paste directly into the previous app."
+                             ? "MQCopy can paste directly into the previous app."
                              : "Without this, selecting a history item copies it to the clipboard but won’t auto-paste.")
                             .font(.caption)
                             .foregroundStyle(.secondary)

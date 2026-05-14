@@ -17,7 +17,7 @@ private struct MenuBarExtraContent: View {
         }
         .keyboardShortcut(",", modifiers: .command)
         Divider()
-        Button("Quit MCopy") {
+        Button("Quit MQCopy") {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
