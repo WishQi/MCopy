@@ -17,7 +17,7 @@ private struct MenuBarExtraContent: View {
         }
         .keyboardShortcut(",", modifiers: .command)
         Divider()
-        Button("Quit MCopy") {
+        Button("Quit MQCopy") {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q")
@@ -43,7 +43,7 @@ struct MCopyApp: App {
     }()
 
     var body: some Scene {
-        MenuBarExtra("MCopy", systemImage: "doc.on.clipboard") {
+        MenuBarExtra("MQCopy", systemImage: "doc.on.clipboard") {
             MenuBarExtraContent(toggleHistoryPanel: { appDelegate.togglePanel() })
         }
         .menuBarExtraStyle(.menu)

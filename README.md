@@ -1,10 +1,12 @@
-# MCopy
+# MQCopy
 
 [![License: PolyForm NC 1.0.0](https://img.shields.io/badge/License-PolyForm_NC_1.0.0-orange.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-macOS_14%2B-blue.svg)](#requirements)
 
 A lightweight, privacy-first macOS menu bar clipboard manager built with SwiftUI + SwiftData.
 Your clipboard history stays 100% on your Mac — no network, no cloud, no telemetry.
+
+> Note: the source tree still uses the original `MCopy` directory and Xcode project names for historical reasons. The user-facing product name is **MQCopy**.
 
 ## Features
 
@@ -19,7 +21,7 @@ Your clipboard history stays 100% on your Mac — no network, no cloud, no telem
 
 - `⌘⇧V`: Show history panel
 - `⌘,`: Open Settings
-- `⌘Q`: Quit MCopy
+- `⌘Q`: Quit MQCopy
 
 ## Requirements
 
@@ -33,12 +35,12 @@ macOS 14.0 or later.
 
 ## Privacy
 
-MCopy does not collect, transmit, or store any data outside your Mac.
+MQCopy does not collect, transmit, or store any data outside your Mac.
 See the full [Privacy Policy](privacy.md).
 
 ## License
 
-MCopy is **source-available** under the [PolyForm Noncommercial 1.0.0](LICENSE) license.
+MQCopy is **source-available** under the [PolyForm Noncommercial 1.0.0](LICENSE) license.
 
 - ✅ You may read, modify, and use it for personal or noncommercial purposes
 - ✅ Charities, schools, and government institutions may use it freely
