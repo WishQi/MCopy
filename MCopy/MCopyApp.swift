@@ -43,7 +43,7 @@ struct MCopyApp: App {
     }()
 
     var body: some Scene {
-        MenuBarExtra("MCopy", systemImage: "doc.on.clipboard") {
+        MenuBarExtra("MQCopy", systemImage: "doc.on.clipboard") {
             MenuBarExtraContent(toggleHistoryPanel: { appDelegate.togglePanel() })
         }
         .menuBarExtraStyle(.menu)
