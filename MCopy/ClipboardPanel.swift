@@ -189,34 +189,11 @@ class ClipboardPanel: NSPanel, NSWindowDelegate {
         monitor?.ignoreNextChange()
         store.touch(item)
         item.writeToPasteboard()
-        // Skip the close animation here — the panel needs to disappear immediately
-        // so the synthesized ⌘V lands in the previous app, not our panel.
         skipCloseAnimation = true
         close()
         skipCloseAnimation = false
-
-        guard let app = previousApp else { return }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
-            app.activate()
-            if AXIsProcessTrusted() {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-                    Self.simulateCmdV()
-                }
-            }
-        }
-    }
-
-    private static func simulateCmdV() {
-        let src = CGEventSource(stateID: .hidSystemState)
-        let vKey: CGKeyCode = 9
-        guard let down = CGEvent(keyboardEventSource: src, virtualKey: vKey, keyDown: true),
-              let up   = CGEvent(keyboardEventSource: src, virtualKey: vKey, keyDown: false)
-        else { return }
-        down.flags = .maskCommand
-        up.flags   = .maskCommand
-        down.post(tap: .cgSessionEventTap)
-        up.post(tap: .cgSessionEventTap)
+        previousApp?.activate()
+        previousApp = nil
     }
 
     /// Offset toward the off-screen edge for the given position. Used for both
